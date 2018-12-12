@@ -198,7 +198,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                     break
             numbs = self.text.split(lu)
             n1 = float('0' + numbs[0])
-            n2 = float(numbs[1])
+            n2 = float('0' + numbs[1])
             if lu == "!":
                 if n1 == int(n1) >= 0:
                     n = int(float(n1))
@@ -207,6 +207,8 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                     while i < n:
                         i += 1
                         fac = fac * i
+                    if n == 0:
+                        self.fact = 1
                     self.fact = fac
                     self.label.setText(str(self.fact))
                     self.text = str(self.fact)
