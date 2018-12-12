@@ -197,7 +197,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                 if lu in self.text:
                     break
             numbs = self.text.split(lu)
-            n1 = float(numbs[0])
+            n1 = float('0' + numbs[0])
             n2 = float(numbs[1])
             if lu == "!":
                 if n1 == int(n1) >= 0:
