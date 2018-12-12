@@ -1,4 +1,5 @@
 import sys
+import math
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QMainWindow
 from project import Ui_MainWindow
@@ -20,6 +21,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.pushButton_3.clicked.connect(self.n7)
         self.pushButton_7.clicked.connect(self.n8)
         self.pushButton_12.clicked.connect(self.n9)
+        self.pushButton.clicked.connect(self.n0)
         self.pushButton_10.clicked.connect(self.point)
         self.pushButton_15.clicked.connect(self.factor)
         self.pushButton_20.clicked.connect(self.equal)
@@ -31,6 +33,15 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.pushButton_6.clicked.connect(self.comp)
         self.pushButton_5.clicked.connect(self.modlike)
         self.pushButton_21.clicked.connect(self.clear)
+        self.pushButton_23.clicked.connect(self.sin)
+        self.pushButton_24.clicked.connect(self.cos)
+        self.pushButton_25.clicked.connect(self.tg)
+        self.pushButton_26.clicked.connect(self.ctg)
+        self.pushButton_29.clicked.connect(self.delete)
+        self.pushButton_28.clicked.connect(self.mod)
+        self.pushButton_27.clicked.connect(self.div)
+
+
 
     def run(self):
         #s = float(self.function.text().split('^')[1])
@@ -79,28 +90,28 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             pass
     def plus(self):
         if self.flag:
-            self.text += '+'
+            self.text += ' + '
             self.label.setText(self.text)
             self.flag = False
         else:
             pass
     def minus(self):
         if self.flag:
-            self.text += '-'
+            self.text += ' - '
             self.label.setText(self.text)
             self.flag = False
         else:
             pass
     def comp(self):
         if self.flag:
-            self.text += '*'
+            self.text += ' * '
             self.label.setText(self.text)
             self.flag = False
         else:
             pass
     def division(self):
         if self.flag:
-            self.text += '/'
+            self.text += ' / '
             self.label.setText(self.text)
             self.flag = False
         else:
@@ -113,14 +124,14 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             pass
     def step(self):
         if self.flag:
-            self.text += '^'
+            self.text += ' ^ '
             self.label.setText(self.text)
             self.flag = False
         else:
             pass
     def sqrt(self):
         if self.flag:
-            self.text += '^0.5'
+            self.text += ' ^ 0.5'
             self.label.setText(self.text)
             self.flag = False
         else:
@@ -128,55 +139,125 @@ class MyWidget(QMainWindow, Ui_MainWindow):
 
     def factor(self):
         if self.flag:
-            n = int(float(self.text))
-            fac = 1
-            i = 0
-            while i < n:
-                i += 1
-                fac = fac * i
-            self.fact = fac
             self.text += '!'
             self.label.setText(self.text)
+        else:
+            pass
+    def sin(self):
+        if self.text == '':
+            self.text += 'sin '
+            self.flag = False
+            self.label.setText(self.text)
+        else:
+            pass
+
+    def cos(self):
+        if self.text == '':
+            self.text += 'cos '
+            self.flag = False
+            self.label.setText(self.text)
+        else:
+            pass
+    def tg(self):
+        if self.text == '':
+            self.text += 'tg '
+            self.flag = False
+            self.label.setText(self.text)
+        else:
+            pass
+    def ctg(self):
+        if self.text == '':
+            self.text += 'ctg '
+            self.flag = False
+            self.label.setText(self.text)
+        else:
+            pass
+    def delete(self):
+            self.text = self.text[:-1]
+            self.label.setText(self.text)
+    def mod(self):
+        if self.flag:
+            self.text += ' mod '
+            self.label.setText(self.text)
+            self.flag = False
+        else:
+            pass
+    def div(self):
+        if self.flag:
+            self.text += ' div '
+            self.label.setText(self.text)
+            self.flag = False
+        else:
+            pass
+
     def equal(self):
         try:
-            for lu in ['+', '-', '*', '/', '^', '!']:
+            for lu in [' + ', ' - ', ' * ', ' / ',
+                       ' ^ ', '!', 'sin ', 'cos ', 'tg ', 'ctg ', ' div ', ' mod ']:
                 if lu in self.text:
                     break
             numbs = self.text.split(lu)
             n1 = float(numbs[0])
+            n2 = float(numbs[1])
             if lu == "!":
                 if n1 == int(n1) >= 0:
+                    n = int(float(n1))
+                    fac = 1
+                    i = 0
+                    while i < n:
+                        i += 1
+                        fac = fac * i
+                    self.fact = fac
                     self.label.setText(str(self.fact))
                     self.text = str(self.fact)
                 else:
                     self.label.setText('Error')
                     self.text = ''
-            elif lu == '+':
+            elif lu == ' + ':
                 self.label.setText(str((n1) + float(numbs[1])))
                 self.text = str((n1) + float(numbs[1]))
-            elif lu == '-':
+            elif lu == ' - ':
                 self.label.setText(str((n1) - float(numbs[1])))
                 self.text = str((n1) - float(numbs[1]))
-            elif lu == '*':
+            elif lu == ' * ':
                 self.label.setText(str((n1) * float(numbs[1])))
                 self.text = str((n1) * float(numbs[1]))
-            elif lu == '/':
+            elif lu == ' / ':
                 try:
                     self.label.setText(str((n1) / float(numbs[1])))
                     self.text = str((n1) / float(numbs[1]))
                 except:
                     self.label.setText('Error')
                     self.text = ''
-            elif lu == '^':
+            elif lu == ' ^ ':
                 try:
                     self.label.setText(str((n1) ** float(numbs[1])))
                     self.text = str((n1) ** float(numbs[1]))
                 except:
                     self.label.setText('Error')
                     self.text = ''
+            elif lu == 'sin ':
+                    self.label.setText(str(math.sin(n2)))
+                    self.text = str(str(math.sin(n2)))
+            elif lu == 'cos ':
+                    self.label.setText(str(math.cos(n2)))
+                    self.text = str(str(math.cos(n2)))
+            elif lu == 'tg ':
+                    self.label.setText(str(math.tan(n2)))
+                    self.text = str(str(math.tan(n2)))
+            elif lu == 'ctg ':
+                    self.label.setText(str(1/ math.tan(n2)))
+                    self.text = str(1 / math.tan(n2))
+            elif lu == ' mod ':
+                    self.label.setText(str((n1) % float(numbs[1])))
+                    self.text = str((n1) % float(numbs[1]))
+            elif lu == ' div ':
+                    self.label.setText(str((n1) // float(numbs[1])))
+                    self.text = str((n1) // float(numbs[1]))
             self.flag = True
         except:
-            self.flag = False
+            self.flag = True
+            self.label.setText('Error')
             self.text = ''
 
 app = QApplication(sys.argv)
