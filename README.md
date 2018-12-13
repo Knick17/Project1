@@ -40,6 +40,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.pushButton_29.clicked.connect(self.delete)
         self.pushButton_28.clicked.connect(self.mod)
         self.pushButton_27.clicked.connect(self.div)
+        self.g1 = 
 
 
 
@@ -83,7 +84,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.text += '0'
         self.label.setText(self.text)
     def point(self):
-        if self.text[-1].isdigit():
+        if self.text == '' or self.text[-1].isdigit() or self.text[-1] == ' ' or self.text[-1] == '-':
             self.text += '.'
             self.label.setText(self.text)
         else:
@@ -117,7 +118,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         else:
             pass
     def modlike(self):
-        if self.text == '':
+        if self.text == '' or self.text[-1] == ' ':
             self.text += '-'
             self.label.setText(self.text)
         else:
@@ -197,9 +198,8 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                 if lu in self.text:
                     break
             numbs = self.text.split(lu)
-            n1 = float('0' + numbs[0])
-            n2 = float('0' + numbs[1])
             if lu == "!":
+                n1 = float(numbs[0])
                 if n1 == int(n1) >= 0:
                     n = int(float(n1))
                     fac = 1
@@ -216,16 +216,20 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                     self.label.setText('Error')
                     self.text = ''
             elif lu == ' + ':
+                n1 = float(numbs[0])
                 self.label.setText(str((n1) + float(numbs[1])))
                 self.text = str((n1) + float(numbs[1]))
             elif lu == ' - ':
+                n1 = float(numbs[0])
                 self.label.setText(str((n1) - float(numbs[1])))
                 self.text = str((n1) - float(numbs[1]))
             elif lu == ' * ':
+                n1 = float(numbs[0])
                 self.label.setText(str((n1) * float(numbs[1])))
                 self.text = str((n1) * float(numbs[1]))
             elif lu == ' / ':
                 try:
+                    n1 = float(numbs[0])
                     self.label.setText(str((n1) / float(numbs[1])))
                     self.text = str((n1) / float(numbs[1]))
                 except:
@@ -233,27 +237,34 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                     self.text = ''
             elif lu == ' ^ ':
                 try:
+                    n1 = float(numbs[0])
                     self.label.setText(str((n1) ** float(numbs[1])))
                     self.text = str((n1) ** float(numbs[1]))
                 except:
                     self.label.setText('Error')
                     self.text = ''
             elif lu == 'sin ':
+                    n2 = float(numbs[1])
                     self.label.setText(str(math.sin(n2)))
                     self.text = str(str(math.sin(n2)))
             elif lu == 'cos ':
+                    n2 = float(numbs[1])
                     self.label.setText(str(math.cos(n2)))
                     self.text = str(str(math.cos(n2)))
             elif lu == 'tg ':
+                    n2 = float(numbs[1])
                     self.label.setText(str(math.tan(n2)))
                     self.text = str(str(math.tan(n2)))
             elif lu == 'ctg ':
+                    n2 = float(numbs[1])
                     self.label.setText(str(1/ math.tan(n2)))
                     self.text = str(1 / math.tan(n2))
             elif lu == ' mod ':
+                    n1 = float(numbs[0])
                     self.label.setText(str((n1) % float(numbs[1])))
                     self.text = str((n1) % float(numbs[1]))
             elif lu == ' div ':
+                    n1 = float(numbs[0])
                     self.label.setText(str((n1) // float(numbs[1])))
                     self.text = str((n1) // float(numbs[1]))
             self.flag = True
