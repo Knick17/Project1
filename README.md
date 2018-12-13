@@ -1,7 +1,7 @@
 import sys
 import math
-from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QSpinBox, QLineEdit, QLabel
+from PyQt5.QtWidgets import QMainWindow, QInputDialog
 from project import Ui_MainWindow
 
 
@@ -9,7 +9,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.pushButton_22.clicked.connect(self.run)
+        self.pushButton_22.clicked.connect(self.askgraph)
         self.text = ''
         self.flag = True
         self.pushButton_4.clicked.connect(self.n1)
@@ -40,15 +40,27 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.pushButton_29.clicked.connect(self.delete)
         self.pushButton_28.clicked.connect(self.mod)
         self.pushButton_27.clicked.connect(self.div)
-        self.g1 = 
+        self.gr1 = QLineEdit(self)
+        self.gr2 = QLineEdit(self)
+        self.gr3 = QLineEdit(self)
+        self.gr4 = QLineEdit(self)
+        self.gr5 = QLineEdit(self)
+        self.l1 = QLabel(self)
+        self.l2 = QLabel(self)
+        self.l3 = QLabel(self)
+        self.l4 = QLabel(self)
+        self.l5 = QLabel(self)
+        self.graphs = [self.gr1, self.gr2, self.gr3, self.gr4, self.gr5]
+        self.li = [self.l1, self.l2, self.l3, self.l4, self.l5]
 
-
-
-    def run(self):
-        #s = float(self.function.text().split('^')[1])
-        self.graphicsView.clear()
-        self.graphicsView.plot(range(-50, 50),
-                               [i ** 2 - 10 for i in range(-50, 50)], pen='b')
+    def askgraph(self):
+        j, okBtnPressed = QInputDialog.getInt(
+            self, "Опрос", "Колво графиков", 1, 1, 5, 1)
+        tx = ['f(x)=', 'g(x)=', 'a(x)=', 'b(x)=', 'm(x)=']
+        for i in range(j):
+            self.li[i].setText(tx[i])
+            self.li[i].move(490, 370 + i * 50)
+            self.graphs[i].move(540, 370 + i * 50)
     def clear(self):
         self.text = ''
         self.label.setText(self.text)
