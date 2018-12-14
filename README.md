@@ -1,6 +1,6 @@
 import sys
 import math
-from PyQt5.QtWidgets import QApplication, QWidget, QSpinBox, QLineEdit, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QLineEdit, QLabel, QPushButton
 from PyQt5.QtWidgets import QMainWindow, QInputDialog
 from project import Ui_MainWindow
 
@@ -52,15 +52,49 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.l5 = QLabel(self)
         self.graphs = [self.gr1, self.gr2, self.gr3, self.gr4, self.gr5]
         self.li = [self.l1, self.l2, self.l3, self.l4, self.l5]
+        self.build = QPushButton(self)
+
 
     def askgraph(self):
+        self.number_of_schedules = 0
         j, okBtnPressed = QInputDialog.getInt(
             self, "Опрос", "Колво графиков", 1, 1, 5, 1)
         tx = ['f(x)=', 'g(x)=', 'a(x)=', 'b(x)=', 'm(x)=']
         for i in range(j):
             self.li[i].setText(tx[i])
-            self.li[i].move(490, 370 + i * 50)
-            self.graphs[i].move(540, 370 + i * 50)
+            self.li[i].move(40, 400 + i * 50)
+            self.graphs[i].move(90, 400 + i * 50)
+        self.number_of_schedules = j
+        self.build.move(240, 380)
+        self.build.clicked.connect(self.buildgraph)
+
+    def buildgraph(self):
+        f = True
+        try:
+            self.graphicsView.clear()
+            ox = []
+            oy = []
+            for i in range(self.number_of_schedules):
+                for a in range(-10, 10):
+                    for x in range(-1000, 1001):
+                        try:
+                            oy.append(eval(self.graphs[i].text()))
+                            ox.append(x)
+                            f = True
+                        except:
+                            self.graphicsView.plot(ox, oy, pen='b')
+                            #self.graphicsView.plot([x for d in range(-1000, 1000)], [d for d in range(-1000, 1000)], pen='w')
+                            ox.clear()
+                            oy.clear()
+                            f = False
+                            continue
+                    if f:
+                        self.graphicsView.plot(ox, oy, pen='b')
+                    ox.clear()
+                    oy.clear()
+        except:
+            pass
+
     def clear(self):
         self.text = ''
         self.label.setText(self.text)
