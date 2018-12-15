@@ -3,6 +3,7 @@ import math
 from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QLineEdit, QLabel, QPushButton
 from PyQt5.QtWidgets import QMainWindow, QInputDialog
 from project import Ui_MainWindow
+import numpy as np
 
 
 class MyWidget(QMainWindow, Ui_MainWindow):
@@ -53,7 +54,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.graphs = [self.gr1, self.gr2, self.gr3, self.gr4, self.gr5]
         self.li = [self.l1, self.l2, self.l3, self.l4, self.l5]
         self.build = QPushButton(self)
-
+        self.build.setText('Build')
 
     def askgraph(self):
         self.number_of_schedules = 0
@@ -65,29 +66,31 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.li[i].move(40, 400 + i * 50)
             self.graphs[i].move(90, 400 + i * 50)
         self.number_of_schedules = j
-        self.build.move(240, 380)
+        self.build.move(130, 360)
         self.build.clicked.connect(self.buildgraph)
 
     def buildgraph(self):
         f = True
+        pens = []
         try:
             self.graphicsView.clear()
             ox = []
             oy = []
             for i in range(self.number_of_schedules):
                 for a in range(-10, 10):
-                    for x in range(-1000, 1001):
-                        try:
-                            oy.append(eval(self.graphs[i].text()))
-                            ox.append(x)
-                            f = True
-                        except:
-                            self.graphicsView.plot(ox, oy, pen='b')
-                            #self.graphicsView.plot([x for d in range(-1000, 1000)], [d for d in range(-1000, 1000)], pen='w')
-                            ox.clear()
-                            oy.clear()
-                            f = False
-                            continue
+                    for s in range(-1000, 1001):
+                        for de in range(0, 10):
+                            try:
+                                x = s + 0.1 * de
+                                oy.append(eval(self.graphs[i].text()))
+                                ox.append(x)
+                                f = True
+                            except ZeroDivisionError:
+                                self.graphicsView.plot(ox, oy, pen='b')
+                                ox.clear()
+                                oy.clear()
+                                f = False
+                                continue
                     if f:
                         self.graphicsView.plot(ox, oy, pen='b')
                     ox.clear()
@@ -99,42 +102,54 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.text = ''
         self.label.setText(self.text)
         self.flag = True
+
     def n1(self):
         self.text += '1'
         self.label.setText(self.text)
+
     def n2(self):
         self.text += '2'
         self.label.setText(self.text)
+
     def n3(self):
         self.text += '3'
         self.label.setText(self.text)
+
     def n4(self):
         self.text += '4'
         self.label.setText(self.text)
+
     def n5(self):
         self.text += '5'
         self.label.setText(self.text)
+
     def n6(self):
         self.text += '6'
         self.label.setText(self.text)
+
     def n7(self):
         self.text += '7'
         self.label.setText(self.text)
+
     def n8(self):
         self.text += '8'
         self.label.setText(self.text)
+
     def n9(self):
         self.text += '9'
         self.label.setText(self.text)
+
     def n0(self):
         self.text += '0'
         self.label.setText(self.text)
+
     def point(self):
         if self.text == '' or self.text[-1].isdigit() or self.text[-1] == ' ' or self.text[-1] == '-':
             self.text += '.'
             self.label.setText(self.text)
         else:
             pass
+
     def plus(self):
         if self.flag:
             self.text += ' + '
@@ -142,6 +157,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.flag = False
         else:
             pass
+
     def minus(self):
         if self.flag:
             self.text += ' - '
@@ -149,6 +165,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.flag = False
         else:
             pass
+
     def comp(self):
         if self.flag:
             self.text += ' * '
@@ -156,6 +173,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.flag = False
         else:
             pass
+
     def division(self):
         if self.flag:
             self.text += ' / '
@@ -163,12 +181,14 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.flag = False
         else:
             pass
+
     def modlike(self):
         if self.text == '' or self.text[-1] == ' ':
             self.text += '-'
             self.label.setText(self.text)
         else:
             pass
+
     def step(self):
         if self.flag:
             self.text += ' ^ '
@@ -176,6 +196,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.flag = False
         else:
             pass
+
     def sqrt(self):
         if self.flag:
             self.text += ' ^ 0.5'
@@ -190,6 +211,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.label.setText(self.text)
         else:
             pass
+
     def sin(self):
         if self.text == '':
             self.text += 'sin '
@@ -205,6 +227,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.label.setText(self.text)
         else:
             pass
+
     def tg(self):
         if self.text == '':
             self.text += 'tg '
@@ -212,6 +235,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.label.setText(self.text)
         else:
             pass
+
     def ctg(self):
         if self.text == '':
             self.text += 'ctg '
@@ -219,9 +243,11 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.label.setText(self.text)
         else:
             pass
+
     def delete(self):
-            self.text = self.text[:-1]
-            self.label.setText(self.text)
+        self.text = self.text[:-1]
+        self.label.setText(self.text)
+
     def mod(self):
         if self.flag:
             self.text += ' mod '
@@ -229,6 +255,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.flag = False
         else:
             pass
+
     def div(self):
         if self.flag:
             self.text += ' div '
@@ -290,36 +317,38 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                     self.label.setText('Error')
                     self.text = ''
             elif lu == 'sin ':
-                    n2 = float(numbs[1])
-                    self.label.setText(str(math.sin(n2)))
-                    self.text = str(str(math.sin(n2)))
+                n2 = float(numbs[1])
+                self.label.setText(str(math.sin(n2)))
+                self.text = str(str(math.sin(n2)))
             elif lu == 'cos ':
-                    n2 = float(numbs[1])
-                    self.label.setText(str(math.cos(n2)))
-                    self.text = str(str(math.cos(n2)))
+                n2 = float(numbs[1])
+                self.label.setText(str(math.cos(n2)))
+                self.text = str(str(math.cos(n2)))
             elif lu == 'tg ':
-                    n2 = float(numbs[1])
-                    self.label.setText(str(math.tan(n2)))
-                    self.text = str(str(math.tan(n2)))
+                n2 = float(numbs[1])
+                self.label.setText(str(math.tan(n2)))
+                self.text = str(str(math.tan(n2)))
             elif lu == 'ctg ':
-                    n2 = float(numbs[1])
-                    self.label.setText(str(1/ math.tan(n2)))
-                    self.text = str(1 / math.tan(n2))
+                n2 = float(numbs[1])
+                self.label.setText(str(1 / math.tan(n2)))
+                self.text = str(1 / math.tan(n2))
             elif lu == ' mod ':
-                    n1 = float(numbs[0])
-                    self.label.setText(str((n1) % float(numbs[1])))
-                    self.text = str((n1) % float(numbs[1]))
+                n1 = float(numbs[0])
+                self.label.setText(str((n1) % float(numbs[1])))
+                self.text = str((n1) % float(numbs[1]))
             elif lu == ' div ':
-                    n1 = float(numbs[0])
-                    self.label.setText(str((n1) // float(numbs[1])))
-                    self.text = str((n1) // float(numbs[1]))
+                n1 = float(numbs[0])
+                self.label.setText(str((n1) // float(numbs[1])))
+                self.text = str((n1) // float(numbs[1]))
             self.flag = True
         except:
             self.flag = True
             self.label.setText('Error')
             self.text = ''
 
+
 app = QApplication(sys.argv)
 ex = MyWidget()
 ex.show()
 sys.exit(app.exec_())
+
