@@ -1,4 +1,4 @@
-import sys
+mport sys
 import math
 from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QLineEdit, QLabel, QPushButton
 from PyQt5.QtWidgets import QMainWindow, QInputDialog
@@ -66,37 +66,59 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.li[i].move(40, 400 + i * 50)
             self.graphs[i].move(90, 400 + i * 50)
         self.number_of_schedules = j
-        self.build.move(130, 360)
+        self.build.move(150, 360)
         self.build.clicked.connect(self.buildgraph)
 
     def buildgraph(self):
         f = True
-        pens = []
-        try:
-            self.graphicsView.clear()
-            ox = []
-            oy = []
-            for i in range(self.number_of_schedules):
-                for a in range(-10, 10):
-                    for s in range(-1000, 1001):
-                        for de in range(0, 10):
-                            try:
-                                x = s + 0.1 * de
+        pens = ['w', 'b', 'g', 'r', 'y']
+        self.graphicsView.clear()
+        ox = []
+        oy = []
+        for i in range(self.number_of_schedules):
+            if 'a' in self.graphs[i].text():
+                for a in range(-50, 51, 2):
+                    try:
+                        for s in range(-10, 11):
+                            for de in range(0, 10):
+                                try:
+                                    x = s + 0.1 * de
+                                    if type(eval(self.graphs[i].text())) is not complex:
+                                        oy.append(eval(self.graphs[i].text()))
+                                        ox.append(x)
+                                        f = True
+                                except:
+                                    self.graphicsView.plot(ox, oy, pen=pens[i])
+                                    ox.clear()
+                                    oy.clear()
+                                    f = False
+                                    continue
+                        if f:
+                            self.graphicsView.plot(ox, oy, pen=pens[i])
+                        ox.clear()
+                        oy.clear()
+                    except:
+                        continue
+            else:
+                for s in range(-50, 51):
+                    for de in range(0, 100):
+                        try:
+                            x = s + 0.01 * de
+                            if type(eval(self.graphs[i].text())) is not complex:
                                 oy.append(eval(self.graphs[i].text()))
                                 ox.append(x)
                                 f = True
-                            except ZeroDivisionError:
-                                self.graphicsView.plot(ox, oy, pen='b')
-                                ox.clear()
-                                oy.clear()
-                                f = False
-                                continue
-                    if f:
-                        self.graphicsView.plot(ox, oy, pen='b')
-                    ox.clear()
-                    oy.clear()
-        except:
-            pass
+                        except:
+                            self.graphicsView.plot(ox, oy, pen=pens[i])
+                            ox.clear()
+                            oy.clear()
+                            f = False
+                            continue
+
+                if f:
+                    self.graphicsView.plot(ox, oy, pen=pens[i])
+                ox.clear()
+                oy.clear()
 
     def clear(self):
         self.text = ''
@@ -305,7 +327,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                     n1 = float(numbs[0])
                     self.label.setText(str((n1) / float(numbs[1])))
                     self.text = str((n1) / float(numbs[1]))
-                except:
+                except ZeroDivisionError:
                     self.label.setText('Error')
                     self.text = ''
             elif lu == ' ^ ':
@@ -351,4 +373,3 @@ app = QApplication(sys.argv)
 ex = MyWidget()
 ex.show()
 sys.exit(app.exec_())
-
