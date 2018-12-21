@@ -1,4 +1,4 @@
-mport sys
+import sys
 import math
 from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QLineEdit, QLabel, QPushButton
 from PyQt5.QtWidgets import QMainWindow, QInputDialog
@@ -57,11 +57,15 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.build.setText('Build')
 
     def askgraph(self):
+        for i in range(5):
+            self.graphs[i].clear()
+            self.li[i].clear()
+        print(self.graphs)
         self.number_of_schedules = 0
-        j, okBtnPressed = QInputDialog.getInt(
-            self, "Опрос", "Колво графиков", 1, 1, 5, 1)
+        j, okBtnPressed = QInputDialog.getInt(self, "Опрос", "Колво графиков", 1, 1, 5, 1)
         tx = ['f(x)=', 'g(x)=', 'a(x)=', 'b(x)=', 'm(x)=']
         for i in range(j):
+            self.li[i].show()
             self.li[i].setText(tx[i])
             self.li[i].move(40, 400 + i * 50)
             self.graphs[i].move(90, 400 + i * 50)
@@ -77,16 +81,16 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         oy = []
         for i in range(self.number_of_schedules):
             if 'a' in self.graphs[i].text():
-                for a in range(-50, 51, 2):
+                for a in range(-5, 6, 1):
                     try:
                         for s in range(-10, 11):
                             for de in range(0, 10):
                                 try:
                                     x = s + 0.1 * de
-                                    if type(eval(self.graphs[i].text())) is not complex:
-                                        oy.append(eval(self.graphs[i].text()))
-                                        ox.append(x)
-                                        f = True
+                                    assert type(eval(self.graphs[i].text())) is not complex
+                                    oy.append(eval(self.graphs[i].text()))
+                                    ox.append(x)
+                                    f = True
                                 except:
                                     self.graphicsView.plot(ox, oy, pen=pens[i])
                                     ox.clear()
@@ -100,25 +104,27 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                     except:
                         continue
             else:
-                for s in range(-50, 51):
-                    for de in range(0, 100):
-                        try:
-                            x = s + 0.01 * de
-                            if type(eval(self.graphs[i].text())) is not complex:
+                try:
+                    for s in range(-10, 11):
+                        for de in range(0, 10):
+                            try:
+                                x = s + 0.1 * de
+                                assert type(eval(self.graphs[i].text())) is not complex
                                 oy.append(eval(self.graphs[i].text()))
                                 ox.append(x)
                                 f = True
-                        except:
-                            self.graphicsView.plot(ox, oy, pen=pens[i])
-                            ox.clear()
-                            oy.clear()
-                            f = False
-                            continue
-
-                if f:
-                    self.graphicsView.plot(ox, oy, pen=pens[i])
-                ox.clear()
-                oy.clear()
+                            except:
+                                self.graphicsView.plot(ox, oy, pen=pens[i])
+                                ox.clear()
+                                oy.clear()
+                                f = False
+                                continue
+                    if f:
+                        self.graphicsView.plot(ox, oy, pen=pens[i])
+                    ox.clear()
+                    oy.clear()
+                except:
+                    continue
 
     def clear(self):
         self.text = ''
